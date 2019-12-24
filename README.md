@@ -1,1 +1,1 @@
-# projectNodeExpressPractice
+ express-generator一键生成应用骨架,pug模板引擎的一些用法,mongodb的一些基本操作CRUD,dotenv获取配置文件插件,node模块的使用module.exports,异步函数async的使用
