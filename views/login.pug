@@ -1,0 +1,58 @@
+extends layout
+
+block content
+  .container.registerPage
+    h1= title
+    p
+      a(href="/") 首页
+    form
+      .form-group
+        label 请输入用户名
+        input(name="username", class="form-control" id="username")
+      .form-group
+        label 请输入密码
+        input(name="password", class="form-control" id="password", type="password")
+      .form-group
+        label.captchaLabel 请输入验证码
+          img(src=`/getCaptcha?d${Math.random()}`, alt="captcha", id="captcha")
+        input(name="captcha", id="captchaInput" class="form-control")
+      .form-group
+        button(type="submit", id="submitBtn", class="btn btn-info") 登录
+        .form-text
+          small 还没注册?
+            a(href="/register") 注册
+      script.
+        $(function(){
+          setTimeout(() => {
+            //- $('#captcha').attr('src', `/getCaptcha?d${Math.random()}`)
+          }, 3000);          
+          $('#submitBtn').on('click', function(e){
+              e.preventDefault();
+              $.ajax({
+                url: '/login',
+                type: 'POST',
+                data: {
+                  username: $('#username').val(),
+                  password: $('#password').val(),
+                  captcha: $('#captchaInput').val()
+                  },
+                  success: function(result) {
+                    alert(result);
+                    $('#username').val('');
+                    $('#password').val('');
+                    $('#captchaInput').val('');
+                    if(result === '验证码错误'){
+                      $('#captcha').attr('src', `/getCaptcha?d${Math.random()}`)
+                    }else{
+                      location.href='/';
+                    }
+                  },
+                  error: function(err) {
+                    alert(err);
+                  }
+                });
+            });
+          });
+          $('#captcha').on('click', function(e) { // 刷新验证码
+            $(this).attr('src', `/getCaptcha?d${Math.random()}`)
+          });

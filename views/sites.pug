@@ -1,36 +1,37 @@
 extends layout
 
 block content
-	h1= title
-	p
-		a(href='/') 首页
-	ul
-		each site in sites
-			li
-				=`${site.name} : ${site.url}`
-				!= `  <a href="/sites/editSite/${site._id}">修改</a>`
-				!= `  <a href="javascript:;" data-id="${site._id}" id="delBtn">删除</a>`
-	script.
-		$(function(){
-			$('body').on('click', '#delBtn', function() {
-				const id = $(this).data('id');
-				$.ajax({
-					url: '/sites/deleteSite',
-					type: 'POST',
-					data: {
-						_id: id
-					},
-					success: function(result){
-						if(result === '未找到该数据'){
-							alert(result)
-						}else{
-							alert(`删除成功${JSON.stringify(result)}`);
-							location.reload();
-						};
-					},
-					error: function(err) {
-						alert(err);
-					}
-				});
-			});
-		});
+  .container.sites
+    h1= title
+    p
+      a(href="/") 首页
+    ul.list-group
+      each site in sites
+        li(class="list-group-item")= `${site.name} : ${site.url}`
+          span.float-right
+            a(href=`/sites/editSite/${site._id}`, class="btn btn-primary btn-sm") 修改
+            a(href="javascript:;", class="btn btn-danger btn-sm", data-id=`${site._id}`, id="delBtn") 删除
+    script.
+      $(function(){
+        $('body').on('click', '#delBtn', function() {
+          const id = $(this).data('id');
+          $.ajax({
+            url: '/sites/deleteSite',
+            type: 'POST',
+            data: {
+              _id: id
+            },
+            success: function(result){
+              if(result === '未找到该数据'){
+                alert(result)
+              }else{
+                alert(`删除成功${JSON.stringify(result)}`);
+                location.reload();
+              };
+            },
+            error: function(err) {
+              alert(err);
+            }
+          });
+        });
+      });

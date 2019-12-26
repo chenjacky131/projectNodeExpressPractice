@@ -1,34 +1,38 @@
 extends layout
 
 block content
-	h1= title
-	p
-		a(href='/') 首页
-	form
-		p
-			input(name='siteNamte', type='text', placeholder='站点名', id='siteName', value=site.name)
-		p
-			input(name='siteUrl', type='text', placeholder='站点URL', id='siteUrl', value=site.url)
-		button(type='submit', id='submitBtn') 提交
-		script.
-			$(function(){
-					$('#submitBtn').on('click', function(e){
-						e.preventDefault();
-						$.ajax({
-							url: `/sites/editSite/#{id}`,
-							type: 'POST',
-							data: {
-								name: $('#siteName').val(),
-								url: $('#siteUrl').val()
-							},
-							success: function(result) {
-								alert(result);
-								location.reload();
-							},
-							error: function(err) {
-								alert(err);
-							}
-						});
-				});
-			});
+  .container
+    h1= title
+    p
+      a(href="/") 首页
+    form
+      .form-group
+        label 站点名
+        input(name="siteNamte", type="text", class="form-control", id="siteName", value=site.name)
+      .form-group
+        label 站点URL
+        input(name="siteUrl", type="text", class="form-control", id="siteUrl", value=site.url)
+      .form-group
+        button(type="submit", class="btn btn-info", id="submitBtn") 提交
+      script.
+        $(function(){
+            $('#submitBtn').on('click', function(e){
+              e.preventDefault();
+              $.ajax({
+                url: `/sites/editSite/#{id}`,
+                type: 'POST',
+                data: {
+                  name: $('#siteName').val(),
+                  url: $('#siteUrl').val()
+                },
+                success: function(result) {
+                  alert(result);
+                  location.reload();
+                },
+                error: function(err) {
+                  alert(err);
+                }
+              });
+          });
+        });
 

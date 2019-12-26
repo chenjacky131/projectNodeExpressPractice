@@ -10,3 +10,7 @@ DB_NAME= dbname
 ````
 5. node模块的使用module.exports
 6. 异步函数async的使用
+7. 注册密码md5加混淆字符串加密
+8. 验证码插件svg-captcha
+9. 引入bootstrap框架
+10. 用express-session记录session信息, session store 用connect-mongo;把设置引用session中间件的操作放到连接数据库成功后，防止发生第一次session没有存到的问题

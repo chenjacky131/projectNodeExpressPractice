@@ -1,35 +1,39 @@
 extends layout
 
 block content
-	h1= title
-	p
-		a(href='/') 首页
-	form
-		p
-			input(name='siteNamte', type='text', placeholder='站点名', id='siteName')
-		p
-			input(name='siteUrl', type='text', placeholder='站点URL', id='siteUrl')
-		button(type='submit', id='submitBtn') 提交
-		script.
-			$(function(){
-					$('#submitBtn').on('click', function(e){
-						e.preventDefault();
-						$.ajax({
-							url: '/sites/addSite',
-							type: 'POST',
-							data: {
-								name: $('#siteName').val(),
-								url: $('#siteUrl').val()
-							},
-							success: function(result) {
-								alert(result);
-								$('#siteName').val('');
-								$('#siteUrl').val('');
-							},
-							error: function(err) {
-								alert(err);
-							}
-						});
-				});
-			});
+  .container.login
+    h1= title
+    p
+      a(href="/") 首页    
+    form
+      .form-group
+        label 站点名
+        input(name="siteNamte", type="text", class="form-control", id="siteName")
+      .form-group
+        label 站点URL
+        input(name="siteUrl", type="text", class="form-control", id="siteUrl")
+      .form-group
+        button(type="submit",class="btn btn-info", id="submitBtn") 提交
+      script.
+        $(function(){
+            $('#submitBtn').on('click', function(e){
+              e.preventDefault();
+              $.ajax({
+                url: '/sites/addSite',
+                type: 'POST',
+                data: {
+                  name: $('#siteName').val(),
+                  url: $('#siteUrl').val()
+                },
+                success: function(result) {
+                  alert(result);
+                  $('#siteName').val('');
+                  $('#siteUrl').val('');
+                },
+                error: function(err) {
+                  alert(err);
+                }
+              });
+          });
+        });
 

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const collection = require('../lib/mongodb').Collection();// 获取不要插入数据的表
+const Collection = require('../lib/collection');// 获取mongo数据库的表实例
 const ObjectId = require('mongodb').ObjectId;
 /* 添加站点的路由get */
 router.get('/addSite', function(req, res, next) {
@@ -8,7 +8,7 @@ router.get('/addSite', function(req, res, next) {
 });
 /* 添加站点的路由post */
 router.post('/addSite', function(req, res, next) {
-	collection.then(function(coll){
+	Collection.Connect(req, 'site').then(function(coll){
 		try{			
 			coll.insertOne({name: req.body.name, url: req.body.url});// 插入一条数据
 			res.send('数据插入成功！');
@@ -19,7 +19,7 @@ router.post('/addSite', function(req, res, next) {
 });
 /* 查看站点的路由(前端接口) */
 router.get('/siteDetailFront', function(req, res, next) {
-	collection.then(function(coll){		
+	Collection.Connect(req, 'site').then(function(coll){		
 		coll.find().toArray(function(err, doc){
 			if(err) {
 				throw err;
@@ -31,7 +31,7 @@ router.get('/siteDetailFront', function(req, res, next) {
 });
 /* 查看站点的路由 */
 router.get('/siteDetail', function(req, res, next) {
-	collection.then(function(coll){		
+	Collection.Connect(req, 'site').then(function(coll){		
 		coll.find().toArray(function(err, doc){
 			if(err) {
 				throw err;
@@ -43,7 +43,7 @@ router.get('/siteDetail', function(req, res, next) {
 });
 /* 删除站点的路由 */
 router.post('/deleteSite', function(req, res, next) {
-	collection.then(function(coll){	
+	Collection.Connect(req, 'site').then(function(coll){	
 		coll.findOneAndDelete({_id: ObjectId(req.body._id)},function(err, result){
 			if(err) {
 				throw err;
@@ -59,7 +59,7 @@ router.post('/deleteSite', function(req, res, next) {
 });
 /* 编辑站点的路由get */
 router.get('/editSite/:id', function(req, res, next) {
-	collection.then(function(coll){		
+	Collection.Connect(req, 'site').then(function(coll){		
 		coll.findOne({_id : ObjectId(req.params.id)},function(err, doc){
 			if(err) {
 				throw err;
@@ -71,7 +71,7 @@ router.get('/editSite/:id', function(req, res, next) {
 });
 /* 编辑站点的路由post */
 router.post('/editSite/:id', function(req, res, next) {
-	collection.then(function(coll){		
+	Collection.Connect(req, 'site').then(function(coll){		
 		coll.findOneAndUpdate({_id : ObjectId(req.params.id) }, {$set: {name: req.body.name, url: req.body.url} }, function(err, result) {
 			if(err) {
 				throw err;
