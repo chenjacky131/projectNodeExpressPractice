@@ -14,3 +14,4 @@ DB_NAME= dbname
 8. 验证码插件svg-captcha
 9. 引入bootstrap框架
 10. 用express-session记录session信息, session store 用connect-mongo;把设置引用session中间件的操作放到连接数据库成功后，防止发生第一次session没有存到的问题
+11. 简单的头像上传功能，直接用base64显示图片，简单的表单验证
