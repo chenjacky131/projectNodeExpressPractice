@@ -21,7 +21,7 @@ router.post('/register', function(req, res, next) {
         if(user){
           res.send('用户名已存在');
         }else{
-          coll.insertOne({username: req.body.username, password: md5(req.app.locals.passwordFix + req.body.password)});// 插入一条数据
+          coll.insertOne({avatar: req.body.avatar,username: req.body.username, password: md5(req.app.locals.mixVar + req.body.password)});// 插入一条数据
           res.send('注册成功！');
         }
       });		
@@ -58,7 +58,7 @@ router.post('/login', function(req, res, next) {
   }else{
     Collection.Connect(req, 'user').then(function(coll){		
       coll.findOne({username: req.body.username}, function(err, user) {        
-        if(md5(req.app.locals.passwordFix + req.body.password) !== user.password){
+        if(md5(req.app.locals.mixVar + req.body.password) !== user.password){
           res.send('密码错误');
         }else{
           req.session.user = user

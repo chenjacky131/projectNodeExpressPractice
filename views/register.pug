@@ -7,6 +7,11 @@ block content
       a(href="/") 首页
     form
       .form-group
+        label 请上传头像
+        .form-text
+          img.avatar(src="/images/avatarPlaceholder.png", id="avatar")
+        input(name="avatar", class="form-control-file", type="file", id="avatarInput")
+      .form-group
         label 请输入用户名
         input(name="username", class="form-control" id="username")
       .form-group
@@ -22,30 +27,57 @@ block content
       script.
         $(function(){
           $('#submitBtn').on('click', function(e){
-              e.preventDefault();
-              $.ajax({
-                url: '/register',
-                type: 'POST',
-                data: {
-                  username: $('#username').val(),
-                  password: $('#password').val(),
-                  captcha: $('#captchaInput').val()
-                  },
-                  success: function(result) {
-                    alert(result);
-                    $('#username').val('');
-                    $('#password').val('');
-                    $('#captchaInput').val('');
-                    if(result === '验证码错误'){
-                      $('#captcha').attr('src', `/getCaptcha?d${Math.random()}`)
-                    }
-                  },
-                  error: function(err) {
-                    alert(err);
+            // 表单验证
+            if(!$('#avatar').data('avatar')){
+              alert('头像不能为空');
+              return false;
+            }else if(!$('#username').val().replace(/^\s*|\s*$/g,'')){
+              alert('用户名不能为空');
+              return false;
+            }else if(!$('#password').val().replace(/^\s*|\s*$/g,'')){
+              alert('密码不能为空');
+              return false;
+            }else if(!$('#captchaInput').val().replace(/^\s*|\s*$/g,'')){
+              alert('验证码不能为空');
+              return false;
+            }
+            e.preventDefault();
+            $.ajax({
+              url: '/register',
+              type: 'POST',
+              data: {
+                avatar: $('#avatar').data('avatar'),
+                username: $('#username').val(),
+                password: $('#password').val(),
+                captcha: $('#captchaInput').val()
+                },
+                success: function(result) {
+                  alert(result);
+                  $('#avatar').data('')
+                  $('#username').val('');
+                  $('#password').val('');
+                  $('#captchaInput').val('');
+                  if(result === '验证码错误'){
+                    $('#captcha').attr('src', `/getCaptcha?d${Math.random()}`)
                   }
-                });
+                },
+                error: function(err) {
+                  alert(err);
+                }
+              });
             });
           });
           $('#captcha').on('click', function(e) { // 刷新验证码
             $(this).attr('src', `/getCaptcha?d${Math.random()}`)
+          });
+          $('#avatarInput').on('change', function(e) {
+            if(!this.files[0]){
+              return false;
+            }
+            const file = this.files[0];
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function(evt) {
+              $('#avatar').data('avatar',evt.target.result).attr('src', evt.target.result);             
+            }
           });

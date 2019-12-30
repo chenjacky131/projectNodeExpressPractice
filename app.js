@@ -10,7 +10,7 @@ const siteRouter = require('./routes/sites');
 require('dotenv').config();
 const app = express();
 app.locals.projectName = 'Express项目练习';// 全局环境变量
-app.locals.passwordFix = 'express';
+app.locals.mixVar = 'node.express.jack';
 // 引入mongodb数据库驱动
 const MongoClient = require('mongodb').MongoClient;
 //连接mongodb
@@ -33,11 +33,11 @@ client.connect(function() {//  连接之后在进行下一步的app实例复制�
 
   // session setting 
   app.use(session({
-    secret: app.locals.passwordFix,// 防止cookie被篡改
+    secret: app.locals.mixVar,// 防止cookie被篡改
     resave: true, //  强制更新session
     saveUninitialized: true, // 强制创建一个session, 即使用户未登录
     cookie: {
-      maxAge: 1 * 24 * 60 * 60 * 1000
+      maxAge: 1 * 24 * 60 * 60 * 1000//  过期时间毫秒
     },
     store: new MongoStore({
       url: `mongodb://${process.env.DB_USER}:${process.env.DB_PASSWORD}@ds046027.mlab.com:46027/${process.env.DB_NAME}`

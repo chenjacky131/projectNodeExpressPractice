@@ -27,6 +27,17 @@ block content
             //- $('#captcha').attr('src', `/getCaptcha?d${Math.random()}`)
           }, 3000);          
           $('#submitBtn').on('click', function(e){
+            // 表单验证
+            if(!$('#username').val().replace(/^\s*|\s*$/g,'')){
+              alert('用户名不能为空');
+              return false;
+            }else if(!$('#password').val().replace(/^\s*|\s*$/g,'')){
+              alert('密码不能为空');
+              return false;
+            }else if(!$('#captchaInput').val().replace(/^\s*|\s*$/g,'')){
+              alert('验证码不能为空');
+              return false;
+            }
               e.preventDefault();
               $.ajax({
                 url: '/login',

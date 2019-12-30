@@ -1,12 +1,13 @@
 extends layout
 
 block content
-  .container
+  .container.indexPage
     h1= title
     .user-info
     ul.list-group
       if user
         li.list-group-item= `欢迎，${user.username}`
+          img(src=`${user.avatar}`, class="small-ava")
           a(href="/logout", class="float-right") 登出
         li.list-group-item
           a(href="/sites/addSite") 添加站点
